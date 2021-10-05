@@ -223,7 +223,9 @@ module Dynamoid
 
     class DateTimeTypeCaster < Base
       def process(value)
-        if !value.respond_to?(:to_datetime)
+        if value.is_a?(BigDecimal)
+          Time.zone.at(value.to_i)
+        elsif !value.respond_to?(:to_datetime)
           nil
         elsif value.is_a?(String)
           dt = begin
